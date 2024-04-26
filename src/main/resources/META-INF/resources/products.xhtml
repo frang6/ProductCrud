@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/199/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="layout.xhtml">
+
+    <ui:define name="content">
+        <h:form id="productForm">
+            <p:panel header="Product Details">
+                <h:panelGrid columns="1">
+                    <p:outputLabel for="type" value="Type: "/>
+                    <p:selectOneMenu id="type" value="#{productBean.type}">
+                        <f:selectItem itemLabel="Informatica" itemValue="Informatica"/>
+                        <f:selectItem itemLabel="Electrodomestico" itemValue="Electrodomestico"/>
+                        <f:selectItem itemLabel="Telefonia" itemValue="Telefonia"/>
+                        <f:selectItem itemLabel="Hogar" itemValue="Hogar"/>
+                        <f:selectItem itemLabel="Deporte" itemValue="Deporte"/>
+                        <f:selectItem itemLabel="Otros" itemValue="Otros"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="description" value="Description: "/>
+                    <p:inputText id="description" value="#{productBean.description}"/>
+                    <p:outputLabel for="price" value="Price: "/>
+                    <p:inputNumber id="price" value="#{productBean.price}"/>
+                    <p:commandButton value="Create" actionListener="#{productBean.create()}"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

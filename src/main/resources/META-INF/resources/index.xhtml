@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/199/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="layout.xhtml">
+    <ui:define name="content">
+        <h:form id="tabla">
+            <p:panel id="toggleable" header="Latest Products" toggleable="true" closable="true"
+                     toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
+                <p:dataTable widgetVar="productTable" id="table" var="product" value="#{productBean.products}">
+                    <p:column headerText="# Id">
+                        <h:outputText value="#{product.id}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{product.type}"/>
+                    </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{product.description}"/>
+                    </p:column>
+                    <p:column headerText="Price">
+                        <h:outputText value="#{product.price}">
+                            <f:convertNumber type="currency" currencySymbol="$"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Edit | Delete">
+                        <p:commandButton icon="pi pi-pencil" styleClass="edit-button rounded-button ui-button-success"
+                                         actionListener="#{productBean.showDialog(product)}" style="margin-right: 10px"
+                                         oncomplete="PF('wdlgDatos').show();" update="dlgDatos"/>
+                        <p:commandButton icon="pi pi-trash" class="ui-button-warning rounded-button"
+                                         actionListener="#{productBean.showDialog(product)}" style="margin-left: 10px"
+                                         oncomplete="PF('wdlgEliminar').show();" update="dlgEliminar"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        <p:dialog header="Datos" widgetVar="wdlgDatos" id="dlgDatos">
+            <h:form id="productDialog1">
+                <p:panel header="Product Details">
+                    <h:panelGrid columns="1">
+                        <p:outputLabel for="id" value="Id: " rendered="false"/>
+                        <h:inputHidden id="idUpdate" value="#{productBean.id}"/>
+                        <p:outputLabel for="type" value="Type: "/>
+                        <p:selectOneMenu id="type" value="#{productBean.type}">
+                            <f:selectItem itemLabel="Informatica" itemValue="Informatica"/>
+                            <f:selectItem itemLabel="Electrodomestico" itemValue="Electrodomestico"/>
+                            <f:selectItem itemLabel="Telefonia" itemValue="Telefonia"/>
+                            <f:selectItem itemLabel="Hogar" itemValue="Hogar"/>
+                            <f:selectItem itemLabel="Deporte" itemValue="Deporte"/>
+                            <f:selectItem itemLabel="Otros" itemValue="Otros"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="description" value="Description: "/>
+                        <p:inputText id="description" value="#{productBean.description}"/>
+                        <p:outputLabel for="price" value="Price: "/>
+                        <p:inputNumber id="price" value="#{productBean.price}"/>
+                        <p:commandButton value="Modify" actionListener="#{productBean.update()}"
+                                         oncomplete="PF('wdlgDatos').hide();" update="tabla:table"/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <p:dialog header="Delete" widgetVar="wdlgEliminar" id="dlgEliminar">
+            <h:form id="productDialog">
+                <p:panel header="Product Details">
+                    <h:panelGrid columns="1">
+                        <p>Are you sure about deleting this product?</p>
+                        <h:inputHidden id="idDelete" value="#{productBean.id}"/>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Delete" actionListener="#{productBean.delete()}"
+                                             oncomplete="PF('wdlgEliminar').hide();" update="tabla:table"/>
+                            <p:commandButton value="Cancel" oncomplete="PF('wdlgEliminar').hide();"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</html>
